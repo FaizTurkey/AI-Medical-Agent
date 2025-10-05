@@ -37,7 +37,7 @@ Return the result in this JSON format:
 Only include valid fields. Respond with nothing else.
 `
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextResponse) {
     try {
         const { sessionId, sessionDetail, messages } = await req.json();
 
