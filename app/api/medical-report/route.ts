@@ -1,9 +1,10 @@
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/config/db";
 import { openai } from "@/config/OpenAiModel";
 import { SessionChatTable } from "@/config/schema";
 import { AIDoctorAgents } from "@/shared/list";
 import { eq } from "drizzle-orm";
-import { NextRequest, NextResponse } from "next/server";
+
 
 const REPORT_GEN_PROMPT = `
 You are an Al Medical Voice Agent that just finished a voice conversation with a user. Based on Doctor AI agent Info and Conversation between AI medical agent and user, generate a structured report with the following fields:
@@ -37,9 +38,9 @@ Only include valid fields. Respond with nothing else.
 `
 
 export async function POST(req: NextRequest) {
-    const { sessionId, sessionDetail, messages } = await req.json();
-
     try {
+        const { sessionId, sessionDetail, messages } = await req.json();
+
         const UserInput = "AI Doctor Agent Info : " + JSON.stringify(sessionDetail) + ", Conversation :"
             + JSON.stringify(messages);
         const completion = await openai.chat.completions.create({
@@ -58,10 +59,10 @@ export async function POST(req: NextRequest) {
 
         // Save To DataBase
         const result = await db.update(SessionChatTable).set({
-            report:JSONResp,
-            conversation:messages
+            report: JSONResp,
+            conversation: messages
 
-        }).where(eq(SessionChatTable.sessionId,sessionId));
+        }).where(eq(SessionChatTable.sessionId, sessionId));
 
 
         return NextResponse.json(JSONResp);
