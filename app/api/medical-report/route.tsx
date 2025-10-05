@@ -3,7 +3,7 @@ import { openai } from "@/config/OpenAiModel";
 import { SessionChatTable } from "@/config/schema";
 import { AIDoctorAgents } from "@/shared/list";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const REPORT_GEN_PROMPT = `
 You are an Al Medical Voice Agent that just finished a voice conversation with a user. Based on Doctor AI agent Info and Conversation between AI medical agent and user, generate a structured report with the following fields:
@@ -36,7 +36,7 @@ Return the result in this JSON format:
 Only include valid fields. Respond with nothing else.
 `
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
     const { sessionId, sessionDetail, messages } = await req.json();
 
     try {
