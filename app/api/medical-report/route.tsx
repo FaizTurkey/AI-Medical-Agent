@@ -37,7 +37,7 @@ Return the result in this JSON format:
 Only include valid fields. Respond with nothing else.
 `
 
-export async function POST(req: NextResponse) {
+export async function POST(req: Request) {
     try {
         const { sessionId, sessionDetail, messages } = await req.json();
 
@@ -65,7 +65,7 @@ export async function POST(req: NextResponse) {
         }).where(eq(SessionChatTable.sessionId, sessionId));
 
 
-        return NextResponse.json(JSONResp);
+        return NextResponse.json({result});
     } catch (e) {
         return NextResponse.json(e);
     }
