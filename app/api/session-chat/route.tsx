@@ -2,10 +2,10 @@ import { db } from "@/config/db";
 import { SessionChatTable } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { desc, eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from 'uuid';
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
     const { notes, selectedDoctor } = await req.json();
     const user = await currentUser();
 
@@ -27,7 +27,7 @@ export async function POST(req: NextResponse) {
 }
 
 
-export async function GET(req: NextResponse) {
+export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const sessionId = searchParams.get('sessionId');
     const user = await currentUser();
